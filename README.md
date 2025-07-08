@@ -1,5 +1,5 @@
 # Chords-Java
-Chords parser written in Java, connects to development board running Chords Arduino Firmware.
+Chords parser written in Java, connects to development board running [Chords Arduino Firmware](https://github.com/upsidedownlabs/Chords-Arduino-Firmware).
 
 ## Features
    
