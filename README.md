@@ -12,7 +12,7 @@ Chords parser written in Java, connects to development board running Chords Ardu
 ```plaintext
 ChordsLSLStreamer/
 ├── lib/
-│   ├── jserialcomm-2.9.3.jar
+│   ├── jserialcomm-2.11.0.jar
 │   ├── jna.jar
 │   ├── jna-platform.jar
 │   └── liblsl64.dll
