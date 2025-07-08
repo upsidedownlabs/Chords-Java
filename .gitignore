@@ -23,9 +23,8 @@
 hs_err_pid*
 replay_pid*
 
-#external libraries 
+# external libraries 
 lib/jSerialComm-2.11.0.jar
 
-# other files to ignore 
+# other files to ignore #
 *.ini
-
