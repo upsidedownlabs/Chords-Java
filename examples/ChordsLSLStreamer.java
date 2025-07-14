@@ -1,5 +1,5 @@
 
-import com.chords.usb.ChordsUSB;
+
 import edu.ucsd.sccn.LSL;
 
 import java.util.Arrays;
@@ -15,6 +15,7 @@ public class ChordsLSLStreamer {
 
         int numChannels = chords.getNumChannels();
         int samplingRate = chords.getSamplingRate();
+          int bits = chords.getBitResolution(); 
         String boardName = chords.getBoardType();
 
         System.out.println("✅ Connected to: " + boardName + ", " + numChannels + " channels @ " + samplingRate + " Hz");
@@ -38,6 +39,10 @@ public class ChordsLSLStreamer {
                         .append_child_value("unit", "microvolts")
                         .append_child_value("type", "EEG");
             }
+
+            LSL.XMLElement resinfo = info.desc().append_child("resinfo");
+            resinfo.append_child_value("resolution", String.valueOf(bits));
+           
 
             LSL.StreamOutlet outlet = new LSL.StreamOutlet(info);
             System.out.println("🚀 Started LSL stream: CHORDS_USB_Stream");
