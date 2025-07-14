@@ -1,4 +1,4 @@
-package com.chords.usb;
+
 
 import com.fazecast.jSerialComm.SerialPort;
 
@@ -42,28 +42,32 @@ public class ChordsUSB {
     public static class BoardInfo {
         int samplingRate;
         int numChannels;
+        int bits;
 
-        public BoardInfo(int samplingRate, int numChannels) {
+        public BoardInfo(int samplingRate, int numChannels, int bits) {
             this.samplingRate = samplingRate;
             this.numChannels = numChannels;
+            this.bits = bits;
         }
     }
 
     private static final Map<String, BoardInfo> supportedBoards = Map.ofEntries(
-            Map.entry("UNO-R3", new BoardInfo(250, 6)),
-            Map.entry("UNO-CLONE", new BoardInfo(250, 6)),
-            Map.entry("GENUINO-UNO", new BoardInfo(250, 6)),
-            Map.entry("UNO-R4", new BoardInfo(500, 6)),
-            Map.entry("GIGA-R1", new BoardInfo(500, 6)),
-            Map.entry("RPI-PICO-RP2040", new BoardInfo(500, 3)),
-            Map.entry("NPG-LITE", new BoardInfo(500, 3)),
-            Map.entry("NANO-CLONE", new BoardInfo(250, 8)),
-            Map.entry("NANO-CLASSIC", new BoardInfo(250, 8)),
-            Map.entry("STM32F4-BLACK-PILL", new BoardInfo(500, 8)),
-            Map.entry("STM32G4-CORE-BOARD", new BoardInfo(500, 16)),
-            Map.entry("MEGA-2560-R3", new BoardInfo(250, 16)),
-            Map.entry("MEGA-2560-CLONE", new BoardInfo(250, 16))
+            Map.entry("UNO-R3", new BoardInfo(250, 6, 10)),
+            Map.entry("UNO-CLONE", new BoardInfo(250, 6, 10)),
+            Map.entry("GENUINO-UNO", new BoardInfo(250, 6, 10)),
+            Map.entry("UNO-R4", new BoardInfo(500, 6, 14)),         // R4 uses Renesas RA4M1 (14-bit ADC)
+            Map.entry("GIGA-R1", new BoardInfo(500, 6, 16)),        // GIGA R1 has 12-bit ADC
+            Map.entry("RPI-PICO-RP2040", new BoardInfo(500, 3, 12)),// RP2040 has 12-bit ADC
+            Map.entry("NPG-LITE", new BoardInfo(500, 3, 12)),       // Assuming based on RP2040
+            Map.entry("NANO-CLONE", new BoardInfo(250, 8, 10)),
+            Map.entry("NANO-CLASSIC", new BoardInfo(250, 8, 10)),
+            Map.entry("STM32F4-BLACK-PILL", new BoardInfo(500, 8, 12)), // STM32F401 has 12-bit ADC
+            Map.entry("STM32G4-CORE-BOARD", new BoardInfo(500, 16, 12)),// STM32G4 has 12-bit ADC
+            Map.entry("MEGA-2560-R3", new BoardInfo(250, 16, 10)),
+            Map.entry("MEGA-2560-CLONE", new BoardInfo(250, 16, 10))
     );
+
+    
 
     public boolean detect_hardware() {
         int[] baudrates = {230400, 115200};
@@ -277,6 +281,11 @@ public class ChordsUSB {
         BoardInfo info = supportedBoards.get(boardType);
         return info != null ? info.samplingRate : 0;
     }
+
+    public int getBitResolution() {
+    BoardInfo info = supportedBoards.get(boardType);
+    return info != null ? info.bits : 0;
+}
 
     public boolean isSampleMissing() {
         return sampleMissed;
